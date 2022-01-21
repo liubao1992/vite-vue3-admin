@@ -1,6 +1,6 @@
 <script setup>
 import {  ref } from "vue";
-import Echarts from './Echarts.vue'
+import Echarts from "@/components/Echarts.vue"
 
 defineProps({
   msg: String,

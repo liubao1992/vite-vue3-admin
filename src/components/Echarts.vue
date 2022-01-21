@@ -3,7 +3,9 @@
 </template>
 <script setup>
 import { onMounted, getCurrentInstance } from "vue";
-const echarts = getCurrentInstance().appContext.config.globalProperties.$echarts;
+//const echarts = getCurrentInstance().appContext.config.globalProperties.$echarts;
+const { proxy } = getCurrentInstance()
+const echarts = proxy.$echarts
 onMounted(() => {
     let myChart = echarts.init(document.getElementById("myChart"));
     // 绘制图表

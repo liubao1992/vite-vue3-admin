@@ -66,6 +66,7 @@ export default {
   },
   computed: {
     dataLength () {
+      console.log(this.data)
       return this.data.length
     }
   },

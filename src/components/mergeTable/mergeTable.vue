@@ -5,14 +5,13 @@
       :span-method="this.merge ? this.mergeMethod : this.spanMethod"
       style="width: 100%"
     >
-      <mergeColumn v-for="(item, index) in column" :column="item" :key="index">
-      </mergeColumn>
+      <mergeColumn v-for="(item, index) in column" :column="item" :key="index"></mergeColumn>
     </el-table>
   </div>
 </template>
 
 <script setup>
-import { onMounted, defineProps} from "vue";
+import { onMounted, watch } from "vue";
 import mergeColumn from "./mergeColumn.vue";
 
 const props = defineProps({
@@ -37,28 +36,40 @@ onMounted(() => {
       };
     }
   };
-  getMergeArr(props.data,props.merge)
+  getMergeArr(props.data, props.merge)
 });
-function getMergeArr(tableData, merge){
+function getMergeArr(tableData, merge) {
   if (!merge) return
-      mergeLine = {}
-      mergeIndex = {}
-      merge.forEach((item, k) => {
-        tableData.forEach((data, i) => {
-          if (i === 0) {
-            mergeIndex[item] = mergeIndex[item] || []
-            mergeIndex[item].push(1)
-            mergeLine[item] = 0
-          } else {
-            if (data[item] === tableData[i - 1][item]) {
-              mergeIndex[item][mergeLine[item]] += 1
-              mergeIndex[item].push(0)
-            } else {
-              mergeIndex[item].push(1)
-              mergeLine[item] = i
-            }
-          }
-        })
-      })
+  mergeLine = {}
+  mergeIndex = {}
+  merge.forEach((item, k) => {
+    tableData.forEach((data, i) => {
+      if (i === 0) {
+        mergeIndex[item] = mergeIndex[item] || []
+        mergeIndex[item].push(1)
+        mergeLine[item] = 0
+      } else {
+        if (data[item] === tableData[i - 1][item]) {
+          mergeIndex[item][mergeLine[item]] += 1
+          mergeIndex[item].push(0)
+        } else {
+          mergeIndex[item].push(1)
+          mergeLine[item] = i
+        }
+      }
+    })
+  })
 }
+//监听props里的值要用() => props.merge，直接写props.merge不会被监听到
+watch(() => [props.merge, props.data], (data) => {
+  console.log(data)
+  getMergeArr(props.data, props.merge)
+}, {
+  // 首次渲染组件就触发一次
+  immediate: true,
+  // 开启深度监听,对象里面的数据如果发生变化也会被侦听到
+  // 如果监听的数据是一个比较长的表达式，那么需要用一个函数的方式
+  // 但是写成函数形式之后，里层的数据变化不到，所以需要添加deep选项
+  deep: false
+})
 </script>

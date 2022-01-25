@@ -5,7 +5,7 @@
 </template>
 <script setup>
 // import LbColumn from './lb-column'
-import {defineProps} from 'vue'
+// import {defineProps} from 'vue'
 
   const props =defineProps({  //获取传参的数据
     column:Object

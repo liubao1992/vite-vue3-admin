@@ -1,5 +1,5 @@
 <template>
-  <mergeTable :data="tableData" :column="tableColumn" :merge="merge" />
+  <mergeTable :data="tableData" :column="tableColumn" :merge="merge" border />
 </template>
 <script setup>
 import mergeTable from "../components/mergeTable/mergeTable.vue";

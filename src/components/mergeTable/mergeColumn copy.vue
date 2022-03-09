@@ -1,6 +1,5 @@
 <template>
   <el-table-column
-   v-bind="$attrs"
    :prop="column.prop" 
    :label="column.label"
    :type="column.type"
@@ -27,10 +26,33 @@
     :filter-placement="column.filterPlacement"
     :filter-multiple="column.filterMultiple"
     :filter-method="column.filterMethod"
-    :filtered-value="column.filteredValue"></el-table-column>
+    :filtered-value="column.filteredValue">
+    <!-- <template slot="header"
+      slot-scope="scope">
+      <mergeRender v-if="column.renderHeader"
+        :scope="scope"
+        :render="column.renderHeader">
+      </mergeRender>
+      <span v-else>{{ scope.column.label }}</span>
+    </template>
+
+    <template slot-scope="scope">
+      <mergeRender :scope="scope"
+        :render="column.render">
+      </mergeRender>
+    </template>
+
+    <template v-if="column.children">
+      <lb-column v-for="(col, index) in column.children"
+        :key="index"
+        :column="col">
+      </lb-column>
+    </template> -->
+  </el-table-column>
 </template>
 <script setup>
-// import LbColumn from './lb-column'
+import mergeRender from './mergeRender.vue'
+//import forced from './forced.js'
 import { columnFormatter, columnRender } from './column.jsx'
 import { onMounted, watch } from "vue";
 const props = defineProps({  //获取传参的数据
@@ -51,14 +73,13 @@ const setColumn = () => {
   }
   if (!props.column.render) {
     props.column.render = (h, scope) => {
-      //console.log("setColumn",scope)
-      //return columnRender(scope)
+      return columnRender(scope)
     }
   }
 }
 
 watch(() => [props.column], (data) => {
-  setColumn()
+ // setColumn()
 }, {
   immediate: true,
   deep: false
